@@ -70,6 +70,27 @@ def add_student(student: dict) -> dict | None:
         storage[next_id] = student
         return student
 
+def add_mark(student_id : int, raw_mark : str) -> dict | None:
+    MINIMUM_MARK = 1
+    MAXIMUM_MARK = 12
+    
+    if not raw_mark.isnumeric():
+        print("Mark must be a number from 1 to 12!")
+        return None
+    
+    mark = int(raw_mark)
+    if mark < MINIMUM_MARK or mark > MAXIMUM_MARK:
+        print("Mark must be a number from 1 to 12!")
+        return None
+    
+    student: dict | None = storage.get(student_id)
+    if student is None:
+        return None
+    
+    student["marks"].append(int(raw_mark))
+
+    return student
+
 
 def show_students():
     print("=========================\n")
@@ -187,11 +208,32 @@ def student_management_command_handle(command: str):
             print("Erorr on updating student")
         else:
             print(f"Student {updated_student['name']} is updated")
+    elif command == "add_mark":
+        student_id: str = input("\nEnter student's ID: ")
+        if not student_id:
+            print("Student ID must be specified for update")
+            return
+
+        id_ = int(student_id)
+        student: dict | None = storage.get(id_)
+        if student is None:
+            print(f"Student {student_id} not found")
+            return
+
+        show_student(student)
+
+        raw_mark: str = input("Enter student's mark: ")
+        updated_student: dict | None = add_mark(student_id=id_, raw_mark=raw_mark)
+
+        if updated_student is None:
+            print("Erorr on adding mark")
+        else:
+            print(f"Mark is successfully added")
 
 
 def handle_user_input():
     OPERATIONAL_COMMANDS = ("quit", "help")
-    STUDENT_MANAGEMENT_COMMANDS = ("show", "add", "search", "delete", "update")
+    STUDENT_MANAGEMENT_COMMANDS = ("show", "add", "search", "delete", "update", "add_mark")
     AVAILABLE_COMMANDS = (*OPERATIONAL_COMMANDS, *STUDENT_MANAGEMENT_COMMANDS)
 
     HELP_MESSAGE = (
