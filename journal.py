@@ -11,6 +11,8 @@ struct Student:
 struct Teacher: no structure since authentication process
 """
 
+import operator
+
 storage: list[dict] = [
     {
         "id": 1,
@@ -84,6 +86,8 @@ def add_student(student: dict) -> dict | None:
         return None
     else:
         # action
+        student['id'] = max(storage, key=operator.itemgetter("id"))['id'] + 1
+
         storage.append(student)
 
         return student
