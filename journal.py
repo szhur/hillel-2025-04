@@ -54,6 +54,11 @@ storage: dict[int, dict] = {
     },
 }
 
+# ─────────────────────────────────────────────────────────
+# CONSTANTS
+# ─────────────────────────────────────────────────────────
+MINIMUM_MARK = 1
+MAXIMUM_MARK = 12
 
 # ─────────────────────────────────────────────────────────
 # CRUD
@@ -71,8 +76,6 @@ def add_student(student: dict) -> dict | None:
         return student
 
 def add_mark(student_id : int, raw_mark : str) -> dict | None:
-    MINIMUM_MARK = 1
-    MAXIMUM_MARK = 12
     
     if not raw_mark.isnumeric():
         print("Mark must be a number from 1 to 12!")
