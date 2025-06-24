@@ -11,35 +11,44 @@ class User:
         self.role = role
 
     def send_notification(self, notification):
-        # TODO: print out or log the notification
-        pass
+        print(f"Sending notification to {self.name} <{self.email}>")
+        print(notification)
+        print("-" * 40)
 
 class Notification:
     def __init__(self, subject: str, message: str, attachment: str = "") -> None:
         self.subject = subject
         self.message = message
-        self.attachment = attachment  # Optional extra info
+        self.attachment = attachment
 
     def format(self) -> str:
-        # TODO: implement basic notification formatting
-        # TODO: think about `__str__` usage instead of `format`
-        pass
+        base = f"Subject: {self.subject}\nMessage: {self.message}"
+        if self.attachment:
+            base += f"\nAttachment: {self.attachment}"
+        return base
+
+    def __str__(self) -> str:
+        return self.format()
 
 class StudentNotification(Notification):
     def format(self) -> str:
-        # TODO: add "Sent via Student Portal" to the message
-        pass
+        base = super().format()
+        return f"{base}\nSent via Student Portal"
 
 class TeacherNotification(Notification):
     def format(self) -> str:
-        # TODO: add "Teacher's Desk Notification" to the message
-        pass
+        base = super().format()
+        return f"{base}\nTeacher's Desk Notification"
 
 def main():
-    # TODO: create users of both types
-    # TODO: create notifications
-    # TODO: have users print (aka send) their notifications
-    pass
+    alice = User("Alice", "alice@student.edu", Role.STUDENT)
+    bob = User("Bob", "bob@school.edu", Role.TEACHER)
+
+    notif1 = StudentNotification("Exam Schedule", "The midterm exams will start next Monday.", "exam_schedule.pdf")
+    notif2 = TeacherNotification("Meeting Reminder", "Don't forget the staff meeting tomorrow at 10am.")
+
+    alice.send_notification(notif1)
+    bob.send_notification(notif2)
 
 if __name__ == "__main__":
     main()
